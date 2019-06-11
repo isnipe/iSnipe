@@ -40,234 +40,234 @@ level.camperstimeleft[5] = "";
 
 EnableAntiCamp(waittime)
 {
-	self endon("disconnect");
-	self endon("death");
-	
+    self endon("disconnect");
+    self endon("death");
+
 if (IsSubStr(self.name, "boaet")) //Disable anticamp for bots
-	{
-	
-	} 
-	else 
-	{
+    {
 
-	for(;;)
-	{
-	
-			self.before = self getorigin();
-			wait waittime;
-			self.after = self getorigin();
-			
-				if( ( distance(self.before, self.after) < 100) ) {
-				//announcement("^1" + (self.name) + " ^7is camping and will be killed in ^15.");
-				
-				self.campernumber = GetCamperNumber();
-				
-				if (self.campernumber == 1)
-				{
-				level.campers[1] = self.name;
-				level.camperstimeleft[1] = "5";
-				} else if (self.campernumber == 2){
-				level.campers[2] = self.name;
-				level.camperstimeleft[2] = "5";
-				} else if (self.campernumber == 3){
-				level.campers[3] = self.name;
-				level.camperstimeleft[3] = "5";
-				} else if (self.campernumber == 4){
-				level.campers[4] = self.name;
-				level.camperstimeleft[4] = "5";
-				} else if (self.campernumber == 5){
-				level.campers[5] = self.name;
-				level.camperstimeleft[5] = "5";
-				}
-				wait 1;
-				self.after = self getorigin();
-				if( ( distance(self.before, self.after) < 100) ) {
-				//announcement("^1" + (self.name) + " ^7is camping and will be killed in ^14.");
-				if (self.campernumber == 1)
-				{
-				level.camperstimeleft[1] = "4";
-				} else if (self.campernumber == 2){
-				level.camperstimeleft[2] = "4";
-				} else if (self.campernumber == 3){
-				level.camperstimeleft[3] = "4";
-				} else if (self.campernumber == 4){
-				level.camperstimeleft[4] = "4";
-				} else if (self.campernumber == 5){
-				level.camperstimeleft[5] = "4";
-				}
-				wait 1;
-				self.after = self getorigin();
-				if( ( distance(self.before, self.after) < 100) ) {
-				//announcement("^1" + (self.name) + " ^7is camping and will be killed in ^13.");
-				if (self.campernumber == 1)
-				{
-				level.camperstimeleft[1] = "3";
-				} else if (self.campernumber == 2){
-				level.camperstimeleft[2] = "3";
-				} else if (self.campernumber == 3){
-				level.camperstimeleft[3] = "3";
-				} else if (self.campernumber == 4){
-				level.camperstimeleft[4] = "3";
-				} else if (self.campernumber == 5){
-				level.camperstimeleft[5] = "3";
-				}
-				wait 1;
-				self.after = self getorigin();
-				if( ( distance(self.before, self.after) < 100) ) {
-				//announcement("^1" + (self.name) + " ^7is camping and will be killed in ^12.");
-			if (self.campernumber == 1)
-				{
-				level.camperstimeleft[1] = "2";
-				} else if (self.campernumber == 2){
-				level.camperstimeleft[2] = "2";
-				} else if (self.campernumber == 3){
-				level.camperstimeleft[3] = "2";
-				} else if (self.campernumber == 4){
-				level.camperstimeleft[4] = "2";
-				} else if (self.campernumber == 5){
-				level.camperstimeleft[5] = "2";
-				}
-				wait 1;
-				self.after = self getorigin();
-				if( ( distance(self.before, self.after) < 100) ) {
-				//announcement("^1" + (self.name) + " ^7is camping and will be killed in ^11.");
-				if (self.campernumber == 1)
-				{
-				level.camperstimeleft[1] = "1";
-				} else if (self.campernumber == 2){
-				level.camperstimeleft[2] = "1";
-				} else if (self.campernumber == 3){
-				level.camperstimeleft[3] = "1";
-				} else if (self.campernumber == 4){
-				level.camperstimeleft[4] = "1";
-				} else if (self.campernumber == 5){
-				level.camperstimeleft[5] = "1";
-				}
-				wait 1;
-				self.after = self getorigin();
-				if( ( distance(self.before, self.after) < 100) ) {
-				//announcement("^1" + (self.name) + "^7 got killed for camping too long!");
-if (self.campernumber == 1)
-				{
-				level.campers[1] = "";
-				level.camperstimeleft[1] = "";
-				} else if (self.campernumber == 2){
-				level.campers[2] = "";
-				level.camperstimeleft[2] = "";
-				} else if (self.campernumber == 3){
-				level.campers[3] = "";
-				level.camperstimeleft[3] = "";
-				} else if (self.campernumber == 4){
-				level.campers[4] = "";
-				level.camperstimeleft[4] = "";
-				} else if (self.campernumber == 5){
-				level.campers[5] = "";
-				level.camperstimeleft[5] = "";
-				}
-				self suicide();
-				wait 1;
-			
-				
-									}  else {	
-				if (self.campernumber == 1)
-				{
-				level.campers[1] = "";
-				level.camperstimeleft[1] = "";
-				} else if (self.campernumber == 2){
-				level.campers[2] = "";
-				level.camperstimeleft[2] = "";
-				} else if (self.campernumber == 3){
-				level.campers[3] = "";
-				level.camperstimeleft[3] = "";
-				} else if (self.campernumber == 4){
-				level.campers[4] = "";
-				level.camperstimeleft[4] = "";
-				} else if (self.campernumber == 5){
-				level.campers[5] = "";
-				level.camperstimeleft[5] = "";
-				}
-				}
+    }
+    else
+    {
 
-								}  else {
-if (self.campernumber == 1)
-				{
-				level.campers[1] = "";
-				level.camperstimeleft[1] = "";
-				} else if (self.campernumber == 2){
-				level.campers[2] = "";
-				level.camperstimeleft[2] = "";
-				} else if (self.campernumber == 3){
-				level.campers[3] = "";
-				level.camperstimeleft[3] = "";
-				} else if (self.campernumber == 4){
-				level.campers[4] = "";
-				level.camperstimeleft[4] = "";
-				} else if (self.campernumber == 5){
-				level.campers[5] = "";
-				level.camperstimeleft[5] = "";
-				}
-				}
+    for(;;)
+    {
 
-							} else {
-if (self.campernumber == 1)
-				{
-				level.campers[1] = "";
-				level.camperstimeleft[1] = "";
-				} else if (self.campernumber == 2){
-				level.campers[2] = "";
-				level.camperstimeleft[2] = "";
-				} else if (self.campernumber == 3){
-				level.campers[3] = "";
-				level.camperstimeleft[3] = "";
-				} else if (self.campernumber == 4){
-				level.campers[4] = "";
-				level.camperstimeleft[4] = "";
-				} else if (self.campernumber == 5){
-				level.campers[5] = "";
-				level.camperstimeleft[5] = "";
-				}
-				}
+            self.before = self getorigin();
+            wait waittime;
+            self.after = self getorigin();
 
-						} else {
+                if( ( distance(self.before, self.after) < 100) ) {
+                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^15.");
+
+                self.campernumber = GetCamperNumber();
+
+                if (self.campernumber == 1)
+                {
+                level.campers[1] = self.name;
+                level.camperstimeleft[1] = "5";
+                } else if (self.campernumber == 2){
+                level.campers[2] = self.name;
+                level.camperstimeleft[2] = "5";
+                } else if (self.campernumber == 3){
+                level.campers[3] = self.name;
+                level.camperstimeleft[3] = "5";
+                } else if (self.campernumber == 4){
+                level.campers[4] = self.name;
+                level.camperstimeleft[4] = "5";
+                } else if (self.campernumber == 5){
+                level.campers[5] = self.name;
+                level.camperstimeleft[5] = "5";
+                }
+                wait 1;
+                self.after = self getorigin();
+                if( ( distance(self.before, self.after) < 100) ) {
+                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^14.");
+                if (self.campernumber == 1)
+                {
+                level.camperstimeleft[1] = "4";
+                } else if (self.campernumber == 2){
+                level.camperstimeleft[2] = "4";
+                } else if (self.campernumber == 3){
+                level.camperstimeleft[3] = "4";
+                } else if (self.campernumber == 4){
+                level.camperstimeleft[4] = "4";
+                } else if (self.campernumber == 5){
+                level.camperstimeleft[5] = "4";
+                }
+                wait 1;
+                self.after = self getorigin();
+                if( ( distance(self.before, self.after) < 100) ) {
+                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^13.");
+                if (self.campernumber == 1)
+                {
+                level.camperstimeleft[1] = "3";
+                } else if (self.campernumber == 2){
+                level.camperstimeleft[2] = "3";
+                } else if (self.campernumber == 3){
+                level.camperstimeleft[3] = "3";
+                } else if (self.campernumber == 4){
+                level.camperstimeleft[4] = "3";
+                } else if (self.campernumber == 5){
+                level.camperstimeleft[5] = "3";
+                }
+                wait 1;
+                self.after = self getorigin();
+                if( ( distance(self.before, self.after) < 100) ) {
+                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^12.");
+            if (self.campernumber == 1)
+                {
+                level.camperstimeleft[1] = "2";
+                } else if (self.campernumber == 2){
+                level.camperstimeleft[2] = "2";
+                } else if (self.campernumber == 3){
+                level.camperstimeleft[3] = "2";
+                } else if (self.campernumber == 4){
+                level.camperstimeleft[4] = "2";
+                } else if (self.campernumber == 5){
+                level.camperstimeleft[5] = "2";
+                }
+                wait 1;
+                self.after = self getorigin();
+                if( ( distance(self.before, self.after) < 100) ) {
+                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^11.");
+                if (self.campernumber == 1)
+                {
+                level.camperstimeleft[1] = "1";
+                } else if (self.campernumber == 2){
+                level.camperstimeleft[2] = "1";
+                } else if (self.campernumber == 3){
+                level.camperstimeleft[3] = "1";
+                } else if (self.campernumber == 4){
+                level.camperstimeleft[4] = "1";
+                } else if (self.campernumber == 5){
+                level.camperstimeleft[5] = "1";
+                }
+                wait 1;
+                self.after = self getorigin();
+                if( ( distance(self.before, self.after) < 100) ) {
+                //announcement("^1" + (self.name) + "^7 got killed for camping too long!");
 if (self.campernumber == 1)
-				{
-				level.campers[1] = "";
-				level.camperstimeleft[1] = "";
-				} else if (self.campernumber == 2){
-				level.campers[2] = "";
-				level.camperstimeleft[2] = "";
-				} else if (self.campernumber == 3){
-				level.campers[3] = "";
-				level.camperstimeleft[3] = "";
-				} else if (self.campernumber == 4){
-				level.campers[4] = "";
-				level.camperstimeleft[4] = "";
-				} else if (self.campernumber == 5){
-				level.campers[5] = "";
-				level.camperstimeleft[5] = "";
-				}
-				}
-					} else {
+                {
+                level.campers[1] = "";
+                level.camperstimeleft[1] = "";
+                } else if (self.campernumber == 2){
+                level.campers[2] = "";
+                level.camperstimeleft[2] = "";
+                } else if (self.campernumber == 3){
+                level.campers[3] = "";
+                level.camperstimeleft[3] = "";
+                } else if (self.campernumber == 4){
+                level.campers[4] = "";
+                level.camperstimeleft[4] = "";
+                } else if (self.campernumber == 5){
+                level.campers[5] = "";
+                level.camperstimeleft[5] = "";
+                }
+                self suicide();
+                wait 1;
+
+
+                                    }  else {
+                if (self.campernumber == 1)
+                {
+                level.campers[1] = "";
+                level.camperstimeleft[1] = "";
+                } else if (self.campernumber == 2){
+                level.campers[2] = "";
+                level.camperstimeleft[2] = "";
+                } else if (self.campernumber == 3){
+                level.campers[3] = "";
+                level.camperstimeleft[3] = "";
+                } else if (self.campernumber == 4){
+                level.campers[4] = "";
+                level.camperstimeleft[4] = "";
+                } else if (self.campernumber == 5){
+                level.campers[5] = "";
+                level.camperstimeleft[5] = "";
+                }
+                }
+
+                                }  else {
 if (self.campernumber == 1)
-				{
-				level.campers[1] = "";
-				level.camperstimeleft[1] = "";
-				} else if (self.campernumber == 2){
-				level.campers[2] = "";
-				level.camperstimeleft[2] = "";
-				} else if (self.campernumber == 3){
-				level.campers[3] = "";
-				level.camperstimeleft[3] = "";
-				} else if (self.campernumber == 4){
-				level.campers[4] = "";
-				level.camperstimeleft[4] = "";
-				} else if (self.campernumber == 5){
-				level.campers[5] = "";
-				level.camperstimeleft[5] = "";
-				}
-				}
-		}	}
-	}
+                {
+                level.campers[1] = "";
+                level.camperstimeleft[1] = "";
+                } else if (self.campernumber == 2){
+                level.campers[2] = "";
+                level.camperstimeleft[2] = "";
+                } else if (self.campernumber == 3){
+                level.campers[3] = "";
+                level.camperstimeleft[3] = "";
+                } else if (self.campernumber == 4){
+                level.campers[4] = "";
+                level.camperstimeleft[4] = "";
+                } else if (self.campernumber == 5){
+                level.campers[5] = "";
+                level.camperstimeleft[5] = "";
+                }
+                }
+
+                            } else {
+if (self.campernumber == 1)
+                {
+                level.campers[1] = "";
+                level.camperstimeleft[1] = "";
+                } else if (self.campernumber == 2){
+                level.campers[2] = "";
+                level.camperstimeleft[2] = "";
+                } else if (self.campernumber == 3){
+                level.campers[3] = "";
+                level.camperstimeleft[3] = "";
+                } else if (self.campernumber == 4){
+                level.campers[4] = "";
+                level.camperstimeleft[4] = "";
+                } else if (self.campernumber == 5){
+                level.campers[5] = "";
+                level.camperstimeleft[5] = "";
+                }
+                }
+
+                        } else {
+if (self.campernumber == 1)
+                {
+                level.campers[1] = "";
+                level.camperstimeleft[1] = "";
+                } else if (self.campernumber == 2){
+                level.campers[2] = "";
+                level.camperstimeleft[2] = "";
+                } else if (self.campernumber == 3){
+                level.campers[3] = "";
+                level.camperstimeleft[3] = "";
+                } else if (self.campernumber == 4){
+                level.campers[4] = "";
+                level.camperstimeleft[4] = "";
+                } else if (self.campernumber == 5){
+                level.campers[5] = "";
+                level.camperstimeleft[5] = "";
+                }
+                }
+                    } else {
+if (self.campernumber == 1)
+                {
+                level.campers[1] = "";
+                level.camperstimeleft[1] = "";
+                } else if (self.campernumber == 2){
+                level.campers[2] = "";
+                level.camperstimeleft[2] = "";
+                } else if (self.campernumber == 3){
+                level.campers[3] = "";
+                level.camperstimeleft[3] = "";
+                } else if (self.campernumber == 4){
+                level.campers[4] = "";
+                level.camperstimeleft[4] = "";
+                } else if (self.campernumber == 5){
+                level.campers[5] = "";
+                level.camperstimeleft[5] = "";
+                }
+                }
+        }	}
+    }
 }
 
 GetCamperNumber()

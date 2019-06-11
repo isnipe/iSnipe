@@ -19,22 +19,22 @@ level.axisalive = 0;
 self.ateam = self.pers["team"];
 
 if (self.ateam == "allies")
-	{
-	level.alliesalive += 1;
-	} else if (self.ateam == "axis") {
-	level.axisalive += 1;
-	}
+    {
+    level.alliesalive += 1;
+    } else if (self.ateam == "axis") {
+    level.axisalive += 1;
+    }
 
 self thread DoLabel();
 
 self waittill("death");
 
 if (self.ateam == "allies")
-	{
-	level.alliesalive -= 1;
-	} else if (self.ateam == "axis") {
-	level.axisalive -= 1;
-	}
+    {
+    level.alliesalive -= 1;
+    } else if (self.ateam == "axis") {
+    level.axisalive -= 1;
+    }
 
 }
 
@@ -49,23 +49,23 @@ for(;;)
 {
 
 if (self.ateam == "allies")
-	{
-	if (getDvar("g_gametype") != "dm"){
-	
+    {
+    if (getDvar("g_gametype") != "dm"){
+
 lbl setText("^2" + level.alliesalive+ " ^1" +level.axisalive);
-	} else {
-	//FREE FOR ALL
-	
-	lbl setText("^21" + " ^1" + (level.players.size -1));
-	
-	}
-	} else if (self.ateam == "axis") {
-		if (getDvar("g_gametype") != "dm"){
+    } else {
+    //FREE FOR ALL
+
+    lbl setText("^21" + " ^1" + (level.players.size -1));
+
+    }
+    } else if (self.ateam == "axis") {
+        if (getDvar("g_gametype") != "dm"){
 lbl setText("^2" + level.axisalive+ " ^1" + level.alliesalive);
 } else {
 lbl setText("^21" + " ^1" + (level.players.size - 1));
 }
-	}
+    }
 wait 0.1;
 }
 

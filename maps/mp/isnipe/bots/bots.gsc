@@ -5,12 +5,12 @@
 
 spawnBots(AmountOfBots)
 {
-	self thread watchShoot();
-	self thread watchCrouch();
-	self thread initTestClients(AmountOfBots);
-	setDvar("testClients_doMove", 1 );
-	setDvar("testClients_doAttack", 1 );
-	setDvar("testClients_doCrouch", 1 );
+    self thread watchShoot();
+    self thread watchCrouch();
+    self thread initTestClients(AmountOfBots);
+    setDvar("testClients_doMove", 1 );
+    setDvar("testClients_doAttack", 1 );
+    setDvar("testClients_doCrouch", 1 );
 }
 
 initTestClients(numberOfTestClients)
