@@ -3,7 +3,7 @@
 #include maps\mp\gametypes\_hud_util;
 
 
-SpawnBots(AmountOfBots)
+spawnBots(AmountOfBots)
 {
 	self thread watchShoot();
 	self thread watchCrouch();

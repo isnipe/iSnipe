@@ -331,12 +331,12 @@ onPlayerSpawned()
 	{
 		self waittill("spawned_player");
 
-		self thread maps\mp\isnipe\core::initMod();
-self thread ChangeAppearance();
+		self thread maps\mp\isnipe\core::init();
+        self thread changeAppearance();
 	}
 }
 
-ChangeAppearance(Type,MyTeam)
+changeAppearance(Type,MyTeam)
 {
     ModelType=[];
     ModelType[0]="GHILLIE";
