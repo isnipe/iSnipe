@@ -1,10 +1,10 @@
 // TODO: How to add settings into the mix.
 init() {
     // antiCamp
-    self maps\mp\isnipe\extra\anticamp::init();
+    self maps\mp\isnipe\extras\anticamp::init();
 }
 
-onPlayerConnected() {
+onPlayerConnect() {
     // antiCamp
-    self maps\mp\isnipe\extra\anticamp::onPlayerConnected();
+    self maps\mp\isnipe\extras\anticamp::onPlayerConnect();
 }

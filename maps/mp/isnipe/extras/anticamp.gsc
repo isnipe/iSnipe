@@ -1,3 +1,5 @@
+#include maps\mp\gametypes\_hud_util;
+
 /**
  * Initialize the antiCamp variables on the level.
  *
@@ -38,7 +40,7 @@ _setSettingIfNotExists(property, defaultValue) {
 /**
  * Initialize the anti camp for an individual player.
  */
-onPlayerConnected() {
+onPlayerConnect() {
     player = self;
     player.antiCamp = [];
     player.antiCamp["hudElements"] = [];
@@ -56,9 +58,9 @@ onPlayerConnected() {
 _createHUD() {
     self endon("disconnect");
     for(;;) {
-        player thread _drawHUD();
+        self thread _drawHUD();
         self waittill("death");
-        player thread _deleteHUD();
+        self thread _deleteHUD();
         self waittill("spawned_player");
     }
 }
@@ -75,9 +77,8 @@ _drawHUD() {
     killTime = level.antiCamp["interfaceTime"] + level.antiCamp["killTime"];
     header = _createHUDRow(1.0, -25);
     self.antiCamp["hudElements"][0] = header;
-    while(;;) {
+    for(;;) {
         campers = level.antiCamp["campers"];
-        hudElements = self.antiCamp["hudElements"];
 
         // Hide HUD when no campers are available.
         if (campers.size == 0) {
@@ -87,25 +88,26 @@ _drawHUD() {
         }
 
         // Update HUD for all available campers, and add rows if necessary.
-        for (i = 0; i < campers; i++) {
-            if (!isDefined(hudElements[i + 1])) {
-                hudElements[i + 1] = _createHUDRow(0.9, -15 + 10 * i);
+        for (i = 0; i < campers.size; i++) {
+            if (!isDefined(self.antiCamp["hudElements"][i + 1])) {
+                self.antiCamp["hudElements"][i + 1] = _createHUDRow(0.9, -15 + 10 * i);
             }
-            hudElements[i + 1] setText(campers[i].name + " ^3(" + killTime - campers[i].antiCamp["time"] + ")");
+            self.antiCamp["hudElements"][i + 1] setText(campers[i].name + " ^3(" + (killTime - campers[i].antiCamp["time"]) + ")");
         }
 
         // Remove unnecessary HUD elements because of lack of campers.
-        while (hudElements.size > campers.size + 1) {
+        for (i = self.antiCamp["hudElements"].size - 1; i > campers.size; i--) {
             // TODO: Check whether destroying elements in array removes them from array.
-            hudElements[campers.size + 1] destroy();
+            self.antiCamp["hudElements"][i] destroy();
+            self.antiCamp["hudElements"][i] = undefined;
         }
         wait 0.2;
     }
 }
 
 _deleteHUD() {
-    while (self.antiCamp["hudElements"].size > 0) {
-        self.antiCamp["hudElements"][0] destroy();
+    foreach (element in self.antiCamp["hudElements"]) {
+        element destroy();
     }
 }
 
@@ -183,7 +185,7 @@ _removeFromCampers() {
             index = i;
         }
     }
-    level.campers = tempCampers;
+    level.antiCamp["campers"] = tempCampers;
     level notify("antiCamp:REMOVE", self, index);
 }
 
