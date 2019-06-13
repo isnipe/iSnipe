@@ -45,24 +45,18 @@ onPlayerConnect() {
     player.antiCamp = [];
     player.antiCamp["hudElements"] = [];
     player.antiCamp["time"] = 0;
-    player thread _createHUD();
-    player thread _antiCamp();
 }
 
 /**
- * Create the anticamp HUD of the player.
+ * Initialize all methods each times a player spawns.
  *
- * This function takes care of both drawing while the user is alive and
- * deleting the HUD whenever the user dies.
+ * This method is used to reenable the drawing and deleting of the HUD, as well
+ * as the anticamp feature itself.
  */
-_createHUD() {
-    self endon("disconnect");
-    for(;;) {
-        self thread _drawHUD();
-        self waittill("death");
-        self thread _deleteHUD();
-        self waittill("spawned_player");
-    }
+onPlayerSpawned() {
+    self thread _drawHUD();
+    self thread _antiCamp();
+    self thread _deleteHUD();
 }
 
 /**
@@ -97,7 +91,6 @@ _drawHUD() {
 
         // Remove unnecessary HUD elements because of lack of campers.
         for (i = self.antiCamp["hudElements"].size - 1; i > campers.size; i--) {
-            // TODO: Check whether destroying elements in array removes them from array.
             self.antiCamp["hudElements"][i] destroy();
             self.antiCamp["hudElements"][i] = undefined;
         }
@@ -106,9 +99,11 @@ _drawHUD() {
 }
 
 _deleteHUD() {
+    self waittill("death");
     foreach (element in self.antiCamp["hudElements"]) {
         element destroy();
     }
+    self.antiCamp["hudElements"] = [];
 }
 
 /**
@@ -135,17 +130,12 @@ _createHUDRow(opacity, yPosition) {
  *
  * Assumes that function is being called by a player entity.
  * Function is quit after player dies or disconnects.
- *
- * @param interfaceTime: time before player should show up on the HUD
- * @param killTime: time player has to camp after being warned to be killed
- * @param minDistance: minimum distance player has to walk before resetting the
- *                     timer
  */
-_antiCamp(interfaceTime, killTime, minDistance) {
+_antiCamp() {
     self endon("death");
     self endon("disconnect");
+    self.antiCamp["time"] = 0;
     lastPosition = self.origin;
-
     interfaceTime = level.antiCamp["interfaceTime"];
     killTime = level.antiCamp["killTime"];
     minDistance = level.antiCamp["minDistance"];

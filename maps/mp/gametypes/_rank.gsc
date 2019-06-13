@@ -341,6 +341,7 @@ onPlayerSpawned()
         self waittill("spawned_player");
 
         self thread maps\mp\isnipe\core::init();
+        self thread maps\mp\isnipe\moduleloader::onPlayerSpawned();
         self thread changeAppearance();
     }
 }

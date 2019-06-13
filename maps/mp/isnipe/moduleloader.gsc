@@ -8,3 +8,8 @@ onPlayerConnect() {
     // antiCamp
     self maps\mp\isnipe\extras\anticamp::onPlayerConnect();
 }
+
+onPlayerSpawned() {
+    // antiCamp
+    self maps\mp\isnipe\extras\anticamp::onPlayerSpawned();
+}
