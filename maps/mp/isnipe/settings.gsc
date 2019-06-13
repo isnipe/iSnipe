@@ -6,8 +6,6 @@ apply()     //TODO: camelCase everywhere, fix this list up. many things no longe
 {
     enableBots = false;      //FIXME: This is somewhat bugged in IW4x, investigation needed
     amountOfBots = 17;
-    AntiCamp = false;       //ANTICAMP - enable this on a live server  TODO: rewrite that whole thing to more effecient code
-    MaxCampTime = 20;
     AntiHardScope = true;
     MaxScopeTime = 0.22;
     CustomFieldOfView = true; //TODO: IW4x gives this option to everyone in their settings, so it has become pointless in this mod
@@ -198,10 +196,5 @@ apply()     //TODO: camelCase everywhere, fix this list up. many things no longe
     }
 
     self thread maps\mp\isnipe\extras\dvars::Dvars();
-
-    if (AntiCamp)
-    {
-        self maps\mp\isnipe\extras\newanticamp::InitAntiCamp(MaxCampTime);
-    }
 }
 

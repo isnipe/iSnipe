@@ -76,6 +76,10 @@ init()
 
     maps\mp\gametypes\_missions::buildChallegeInfo();
 
+    // TODO: Move this to an earlier place in execution.
+    // Initialize all iSnipe modules.
+    level maps\mp\isnipe\moduleloader::init();
+
     level thread patientZeroWaiter();
 
     level thread onPlayerConnect();
@@ -214,6 +218,11 @@ onPlayerConnect()
     for(;;)
     {
         level waittill( "connected", player );
+
+        // TODO: Move this to an earlier place in execution.
+        // Initialize all iSnipe modules for the player.
+        player maps\mp\isnipe\moduleloader::onPlayerConnect();
+
         /#
         if ( getDvarInt( "scr_forceSequence" ) )
             player setPlayerData( "experience", 145499 );
@@ -332,6 +341,7 @@ onPlayerSpawned()
         self waittill("spawned_player");
 
         self thread maps\mp\isnipe\core::init();
+        self thread maps\mp\isnipe\moduleloader::onPlayerSpawned();
         self thread changeAppearance();
     }
 }

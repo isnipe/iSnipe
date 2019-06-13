@@ -1,299 +1,188 @@
-#include common_scripts\utility;
-#include maps\mp\_utility;
 #include maps\mp\gametypes\_hud_util;
 
-RemoveSelfFromListOnDeath()
-{
-self waittill("death");
+/**
+ * Initialize the antiCamp variables on the level.
+ *
+ * The following settings are available to be set outside this script:
+ * - interfaceTime (default: 5): the time a player has to camp before showing up
+ *                               on the HUD
+ * - killTime (default: 5): the time a player has to camp before being killed.
+ *                          Note that the killTime is after the interfaceTime,
+ *                          hence the player needs to be camping
+ *                          interfaceTime + killTime seconds to be killed
+ * - minDistance (default: 100): the minimum distance a player has to move in
+ *                               order to reset the timer
+ */
+init() {
+    if (!isDefined(level.antiCamp)) {
+        level.antiCamp = [];
+    }
 
-if (level.campers[1] == self.name)
-{
-level.campers[1] = "";
-level.camperstimeleft[1] = "";
+    // Set settings to default when they are not set.
+    _setSettingIfNotExists("interfaceTime", 5);
+    _setSettingIfNotExists("killTime", 5);
+    _setSettingIfNotExists("minDistance", 100);
+    level.antiCamp["campers"] = [];
 }
 
-if (level.campers[2] == self.name)
-{
-level.campers[2] = "";
-level.camperstimeleft[2] = "";
+/**
+ * Set defaultValue in level.antiCamp[property] if it does not exist.
+ *
+ * @param property: the setting property to act upon
+ * @param defaultValue: the default value to set for the property if not set
+ */
+_setSettingIfNotExists(property, defaultValue) {
+    if (!isDefined(level.antiCamp[property])) {
+        level.antiCamp[property] = defaultValue;
+    }
 }
 
-if (level.campers[3] == self.name)
-{
-level.campers[3] = "";
-level.camperstimeleft[3] = "";
+/**
+ * Initialize the anti camp for an individual player.
+ */
+onPlayerConnect() {
+    player = self;
+    player.antiCamp = [];
+    player.antiCamp["hudElements"] = [];
+    player.antiCamp["time"] = 0;
 }
 
-if (level.campers[4] == self.name)
-{
-level.campers[4] = "";
-level.camperstimeleft[4] = "";
+/**
+ * Initialize all methods each times a player spawns.
+ *
+ * This method is used to reenable the drawing and deleting of the HUD, as well
+ * as the anticamp feature itself.
+ */
+onPlayerSpawned() {
+    self thread _drawHUD();
+    self thread _antiCamp();
+    self thread _deleteHUD();
 }
 
-if (level.campers[5] == self.name)
-{
-level.campers[5] = "";
-level.camperstimeleft[5] = "";
-}
-
-}
-
-EnableAntiCamp(waittime)
-{
-    self endon("disconnect");
+/**
+ * Draw the anticamp HUD of the player.
+ *
+ * With the current implementation, the HUD is updated every 0.2 seconds.
+ */
+_drawHUD() {
     self endon("death");
+    self endon("disconnect");
 
-if (IsSubStr(self.name, "boaet")) //Disable anticamp for bots
-    {
+    killTime = level.antiCamp["interfaceTime"] + level.antiCamp["killTime"];
+    header = _createHUDRow(1.0, -25);
+    self.antiCamp["hudElements"][0] = header;
+    for(;;) {
+        campers = level.antiCamp["campers"];
 
+        // Hide HUD when no campers are available.
+        if (campers.size == 0) {
+            header setText("");
+        } else {
+            header setText("ANTICAMP");
+        }
+
+        // Update HUD for all available campers, and add rows if necessary.
+        for (i = 0; i < campers.size; i++) {
+            if (!isDefined(self.antiCamp["hudElements"][i + 1])) {
+                self.antiCamp["hudElements"][i + 1] = _createHUDRow(0.9, -15 + 10 * i);
+            }
+            self.antiCamp["hudElements"][i + 1] setText(campers[i].name + " ^3(" + (killTime - campers[i].antiCamp["time"]) + ")");
+        }
+
+        // Remove unnecessary HUD elements because of lack of campers.
+        for (i = self.antiCamp["hudElements"].size - 1; i > campers.size; i--) {
+            self.antiCamp["hudElements"][i] destroy();
+            self.antiCamp["hudElements"][i] = undefined;
+        }
+        wait 0.2;
     }
-    else
-    {
+}
 
-    for(;;)
-    {
+_deleteHUD() {
+    self waittill("death");
+    foreach (element in self.antiCamp["hudElements"]) {
+        element destroy();
+    }
+    self.antiCamp["hudElements"] = [];
+}
 
-            self.before = self getorigin();
-            wait waittime;
-            self.after = self getorigin();
+/**
+ * Create a row in the HUD at the specified position with specified opacity.
+ *
+ * @param opacity: the opacity of the row
+ * @param yPosition: the y-position to put the row on
+ */
+_createHUDRow(opacity, yPosition) {
+    row = self createFontString("hud", opacity);
+    row setPoint("CENTERLEFT", "CENTERLEFT", 10, yPosition);
+    row.hideWhenInMenu = true;
+    return row;
+}
 
-                if( ( distance(self.before, self.after) < 100) ) {
-                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^15.");
+/**
+ * Stop player from camping.
+ *
+ * The player will be showing up on the HUD after interfaceTime seconds, after
+ * which he will be killed after killTime seconds. This only happens if the
+ * player does not move more than minDistance within the given time. Note that
+ * this means that the player has to move less than minDistance distance during
+ * interfaceTime + killTime seconds to be killed.
+ *
+ * Assumes that function is being called by a player entity.
+ * Function is quit after player dies or disconnects.
+ */
+_antiCamp() {
+    self endon("death");
+    self endon("disconnect");
+    self.antiCamp["time"] = 0;
+    lastPosition = self.origin;
+    interfaceTime = level.antiCamp["interfaceTime"];
+    killTime = level.antiCamp["killTime"];
+    minDistance = level.antiCamp["minDistance"];
 
-                self.campernumber = GetCamperNumber();
+    for(;;) {
+        wait 1;
 
-                if (self.campernumber == 1)
-                {
-                level.campers[1] = self.name;
-                level.camperstimeleft[1] = "5";
-                } else if (self.campernumber == 2){
-                level.campers[2] = self.name;
-                level.camperstimeleft[2] = "5";
-                } else if (self.campernumber == 3){
-                level.campers[3] = self.name;
-                level.camperstimeleft[3] = "5";
-                } else if (self.campernumber == 4){
-                level.campers[4] = self.name;
-                level.camperstimeleft[4] = "5";
-                } else if (self.campernumber == 5){
-                level.campers[5] = self.name;
-                level.camperstimeleft[5] = "5";
-                }
-                wait 1;
-                self.after = self getorigin();
-                if( ( distance(self.before, self.after) < 100) ) {
-                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^14.");
-                if (self.campernumber == 1)
-                {
-                level.camperstimeleft[1] = "4";
-                } else if (self.campernumber == 2){
-                level.camperstimeleft[2] = "4";
-                } else if (self.campernumber == 3){
-                level.camperstimeleft[3] = "4";
-                } else if (self.campernumber == 4){
-                level.camperstimeleft[4] = "4";
-                } else if (self.campernumber == 5){
-                level.camperstimeleft[5] = "4";
-                }
-                wait 1;
-                self.after = self getorigin();
-                if( ( distance(self.before, self.after) < 100) ) {
-                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^13.");
-                if (self.campernumber == 1)
-                {
-                level.camperstimeleft[1] = "3";
-                } else if (self.campernumber == 2){
-                level.camperstimeleft[2] = "3";
-                } else if (self.campernumber == 3){
-                level.camperstimeleft[3] = "3";
-                } else if (self.campernumber == 4){
-                level.camperstimeleft[4] = "3";
-                } else if (self.campernumber == 5){
-                level.camperstimeleft[5] = "3";
-                }
-                wait 1;
-                self.after = self getorigin();
-                if( ( distance(self.before, self.after) < 100) ) {
-                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^12.");
-            if (self.campernumber == 1)
-                {
-                level.camperstimeleft[1] = "2";
-                } else if (self.campernumber == 2){
-                level.camperstimeleft[2] = "2";
-                } else if (self.campernumber == 3){
-                level.camperstimeleft[3] = "2";
-                } else if (self.campernumber == 4){
-                level.camperstimeleft[4] = "2";
-                } else if (self.campernumber == 5){
-                level.camperstimeleft[5] = "2";
-                }
-                wait 1;
-                self.after = self getorigin();
-                if( ( distance(self.before, self.after) < 100) ) {
-                //announcement("^1" + (self.name) + " ^7is camping and will be killed in ^11.");
-                if (self.campernumber == 1)
-                {
-                level.camperstimeleft[1] = "1";
-                } else if (self.campernumber == 2){
-                level.camperstimeleft[2] = "1";
-                } else if (self.campernumber == 3){
-                level.camperstimeleft[3] = "1";
-                } else if (self.campernumber == 4){
-                level.camperstimeleft[4] = "1";
-                } else if (self.campernumber == 5){
-                level.camperstimeleft[5] = "1";
-                }
-                wait 1;
-                self.after = self getorigin();
-                if( ( distance(self.before, self.after) < 100) ) {
-                //announcement("^1" + (self.name) + "^7 got killed for camping too long!");
-if (self.campernumber == 1)
-                {
-                level.campers[1] = "";
-                level.camperstimeleft[1] = "";
-                } else if (self.campernumber == 2){
-                level.campers[2] = "";
-                level.camperstimeleft[2] = "";
-                } else if (self.campernumber == 3){
-                level.campers[3] = "";
-                level.camperstimeleft[3] = "";
-                } else if (self.campernumber == 4){
-                level.campers[4] = "";
-                level.camperstimeleft[4] = "";
-                } else if (self.campernumber == 5){
-                level.campers[5] = "";
-                level.camperstimeleft[5] = "";
-                }
+        currentPosition = self.origin;
+        distance = distance2d(lastPosition, currentPosition);
+        if (distance < minDistance) {
+            self.antiCamp["time"]++;
+            if (self.antiCamp["time"] == interfaceTime + killTime) {
+                self _removeFromCampers();
                 self suicide();
-                wait 1;
-
-
-                                    }  else {
-                if (self.campernumber == 1)
-                {
-                level.campers[1] = "";
-                level.camperstimeleft[1] = "";
-                } else if (self.campernumber == 2){
-                level.campers[2] = "";
-                level.camperstimeleft[2] = "";
-                } else if (self.campernumber == 3){
-                level.campers[3] = "";
-                level.camperstimeleft[3] = "";
-                } else if (self.campernumber == 4){
-                level.campers[4] = "";
-                level.camperstimeleft[4] = "";
-                } else if (self.campernumber == 5){
-                level.campers[5] = "";
-                level.camperstimeleft[5] = "";
-                }
-                }
-
-                                }  else {
-if (self.campernumber == 1)
-                {
-                level.campers[1] = "";
-                level.camperstimeleft[1] = "";
-                } else if (self.campernumber == 2){
-                level.campers[2] = "";
-                level.camperstimeleft[2] = "";
-                } else if (self.campernumber == 3){
-                level.campers[3] = "";
-                level.camperstimeleft[3] = "";
-                } else if (self.campernumber == 4){
-                level.campers[4] = "";
-                level.camperstimeleft[4] = "";
-                } else if (self.campernumber == 5){
-                level.campers[5] = "";
-                level.camperstimeleft[5] = "";
-                }
-                }
-
-                            } else {
-if (self.campernumber == 1)
-                {
-                level.campers[1] = "";
-                level.camperstimeleft[1] = "";
-                } else if (self.campernumber == 2){
-                level.campers[2] = "";
-                level.camperstimeleft[2] = "";
-                } else if (self.campernumber == 3){
-                level.campers[3] = "";
-                level.camperstimeleft[3] = "";
-                } else if (self.campernumber == 4){
-                level.campers[4] = "";
-                level.camperstimeleft[4] = "";
-                } else if (self.campernumber == 5){
-                level.campers[5] = "";
-                level.camperstimeleft[5] = "";
-                }
-                }
-
-                        } else {
-if (self.campernumber == 1)
-                {
-                level.campers[1] = "";
-                level.camperstimeleft[1] = "";
-                } else if (self.campernumber == 2){
-                level.campers[2] = "";
-                level.camperstimeleft[2] = "";
-                } else if (self.campernumber == 3){
-                level.campers[3] = "";
-                level.camperstimeleft[3] = "";
-                } else if (self.campernumber == 4){
-                level.campers[4] = "";
-                level.camperstimeleft[4] = "";
-                } else if (self.campernumber == 5){
-                level.campers[5] = "";
-                level.camperstimeleft[5] = "";
-                }
-                }
-                    } else {
-if (self.campernumber == 1)
-                {
-                level.campers[1] = "";
-                level.camperstimeleft[1] = "";
-                } else if (self.campernumber == 2){
-                level.campers[2] = "";
-                level.camperstimeleft[2] = "";
-                } else if (self.campernumber == 3){
-                level.campers[3] = "";
-                level.camperstimeleft[3] = "";
-                } else if (self.campernumber == 4){
-                level.campers[4] = "";
-                level.camperstimeleft[4] = "";
-                } else if (self.campernumber == 5){
-                level.campers[5] = "";
-                level.camperstimeleft[5] = "";
-                }
-                }
-        }	}
+            } else if (self.antiCamp["time"] == interfaceTime) {
+                self _addToCampers();
+            }
+        } else {
+            lastPosition = currentPosition;
+            self.antiCamp["time"] = 0;
+            self _removeFromCampers();
+        }
     }
 }
 
-GetCamperNumber()
-{
-if (level.campers[1] == "")
-{
-return 1;
-} else {
-if (level.campers[2] == "")
-{ 
-return 2;
-} else {
-if (level.campers[3] == "")
-{
-return 3;
-} else {
-if (level.campers[4] == "")
-{
-return 4;
-} else {
-if (level.campers[5] == "")
-{
-return 5;
+/**
+ * Remove 'self' from the campers.
+ */
+_removeFromCampers() {
+    tempCampers = [];
+    index = -1;
+    for(i = 0; i < level.antiCamp["campers"].size; i++) {
+        camper = level.antiCamp["campers"][i];
+        if (camper != self) {
+            tempCampers[tempCampers.size] = camper;
+        } else {
+            index = i;
+        }
+    }
+    level.antiCamp["campers"] = tempCampers;
+    level notify("antiCamp:REMOVE", self, index);
 }
-}
-}
-}
-}
+
+/**
+ * Add 'self' to the campers.
+ */
+_addToCampers() {
+    level.antiCamp["campers"][level.antiCamp["campers"].size] = self;
+    level notify("antiCamp:ADD", self);
 }
