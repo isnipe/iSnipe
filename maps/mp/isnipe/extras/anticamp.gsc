@@ -56,7 +56,7 @@ onPlayerConnect() {
 onPlayerSpawned() {
     self thread _drawHUD();
     self thread _antiCamp();
-    self thread _deleteHUD();
+    self thread _deleteOnDeath();
 }
 
 /**
@@ -98,12 +98,16 @@ _drawHUD() {
     }
 }
 
-_deleteHUD() {
+/**
+ * Delete player HUD and remove player from campers on death.
+ */
+_deleteOnDeath() {
     self waittill("death");
     foreach (element in self.antiCamp["hudElements"]) {
         element destroy();
     }
     self.antiCamp["hudElements"] = [];
+    self _removeFromCampers();
 }
 
 /**
