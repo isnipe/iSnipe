@@ -2,6 +2,9 @@
 init() {
     // antiCamp
     self maps\mp\isnipe\extras\anticamp::init();
+
+    // antiHardScope
+    self maps\mp\isnipe\extras\antihardscope::init();
 }
 
 onPlayerConnect() {
@@ -12,4 +15,7 @@ onPlayerConnect() {
 onPlayerSpawned() {
     // antiCamp
     self maps\mp\isnipe\extras\anticamp::onPlayerSpawned();
+
+    // antiHardScope
+    self maps\mp\isnipe\extras\antihardscope::onPlayerSpawned();
 }
