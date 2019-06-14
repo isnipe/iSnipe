@@ -9,3 +9,7 @@ __Available Settings__
 - _interfaceTime_ (default: 5): the time in seconds a player has to camp before showing up on the HUD.
 - _killTime_ (default: 5): the time in seconds a player has to camp before being killed, after showing up on the HUD.
 - _minDistance_ (default: 100): the minimum distance a player has to move in order to reset the timer.
+
+### peopleAlive
+This module takes care of recording how many people of each team are alive. Moreover, for each player, a HUD is created where this amount is shown and updated.
+
