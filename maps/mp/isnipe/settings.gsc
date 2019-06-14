@@ -26,7 +26,6 @@ apply()     //TODO: camelCase everywhere, fix this list up. many things no longe
     PlayerMaxHealth = 20; //Settings this to more than 20 could possible prevent 1 shotting people
     EnableKillcam = true;
     ShowPlayersAlive = true;
-    ShowTopPlayer = true;
     EnableFallDamage = false;
     WriteLabel = true;
     TextInLabel = "iSnipe ^14";
@@ -61,11 +60,6 @@ apply()     //TODO: camelCase everywhere, fix this list up. many things no longe
     if (AntiHardScope)
     {
          self thread maps\mp\isnipe\extras\antihardscope::EnableAntiHardScope(MaxScopeTime);
-    }
-
-    if (ShowTopPlayer)
-    {
-        self thread maps\mp\isnipe\extras\topplayers::InitTopPlayers();
     }
 
     if (WriteLabel)

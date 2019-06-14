@@ -198,7 +198,6 @@ playerHostShow(player)
 
         player.ip = player createFontString("normalbold", 0.9);
         player.ip setPoint("BOTTOMRIGHT", "BOTTOMRIGHT", -85, -30);
-        //player.ip setText( "94.246.37.71" + ":" + getDvar( "net_port" ) );
         player.ip setText( (getDvar("isnipe_serverip")) + ":" + getDvar( "net_port" ) );
 
         player waittill("hideHost");
@@ -213,8 +212,6 @@ playerHostShow(player)
 
 onPlayerConnect()
 {
-        setDvar("ui_gametype", "iSnipe 3");
-
     for(;;)
     {
         level waittill( "connected", player );
