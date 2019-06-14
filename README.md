@@ -9,3 +9,9 @@ __Available Settings__
 - _interfaceTime_ (default: 5): the time in seconds a player has to camp before showing up on the HUD.
 - _killTime_ (default: 5): the time in seconds a player has to camp before being killed, after showing up on the HUD.
 - _minDistance_ (default: 100): the minimum distance a player has to move in order to reset the timer.
+
+### antiHardScope
+This module takes care of not allowing players to hardscope for a specified amount of time.
+
+__Available Settings__
+- _adsTime_ (default: 3): the time in seconds a player is allowed to scope before being forced out of scope.
