@@ -12,7 +12,7 @@ init() {
 /**
  * Initialize the variables used by the peopleAlive module on a player level.
  */
-onPlayerConnected() {
+onPlayerConnect() {
     self.peopleAlive = [];
     self.peopleAlive["hud"] = [];
 }
@@ -66,7 +66,7 @@ _drawHUD() {
 _deleteHUD() {
     self waittill("death");
     foreach (hudElement in self.peopleAlive["hud"]) {
-        hudElement.destroy();
+        hudElement destroy();
     }
     self.peopleAlive["hud"] = [];
 }
