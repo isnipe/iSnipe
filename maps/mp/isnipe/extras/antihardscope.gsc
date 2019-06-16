@@ -25,7 +25,7 @@ init() {
  */
 _setSettingIfNotExists(property, defaultValue) {
     if (!isDefined(level.antiCamp[property])) {
-        level.antiCamp[property] = defaultValue;
+        level.antiHardScope[property] = defaultValue;
     }
 }
 
@@ -51,7 +51,7 @@ onPlayerSpawned() {
             while(self playerAds() > 0) {
                 wait(stepTime);
             }
-            self.allowAds(true);
+            self allowAds(true);
         }
         wait(stepTime);
     }
