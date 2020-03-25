@@ -1,5 +1,7 @@
 # iSnipe
 
+Visit us on discord: [![discordlink](https://discordapp.com/assets/e4923594e694a21542a489471ecffa50.svg)](https://discord.gg/G6vkmDy)
+
 ## Modules
 
 ### antiCamp
