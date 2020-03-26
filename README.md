@@ -11,3 +11,7 @@ __Available Settings__
 - _interfaceTime_ (default: 5): the time in seconds a player has to camp before showing up on the HUD.
 - _killTime_ (default: 5): the time in seconds a player has to camp before being killed, after showing up on the HUD.
 - _minDistance_ (default: 100): the minimum distance a player has to move in order to reset the timer.
+
+### topPlayer
+This module tracks the current top player by finding the player with the highest k/d ratio.
+It draws the HUD for each player showing the top players name and k/d ratio.
